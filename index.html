@@ -161,11 +161,6 @@
         </div>
     </main>
 
-    <footer id="foot" class="mt-5">
-        <!-- Conteúdo do rodapé original -->
-    </footer>
-
-
     <!-- INÍCIO: Modal de Relatórios -->
     <div class="modal fade" id="metricsModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg">
@@ -197,6 +192,76 @@
     </div>
     <!-- FIM: Modal de Relatórios -->
 
+    <footer id="foot">
+        <div class="wrap">
+            <div id="footer">
+                <div class="footitem">
+                    <span><b><i>Agradecimentos</i></b> às coordenadoras dos volumes impressos: Daisi Malhadas, M. Celeste C. Dezotti e M. Helena M. Neves e <a href="javascript:void()" data-bs-toggle="modal" data-bs-target="#exampleModal" >aos autores</a>;  à  <a target="_blank" href="https://www.atelie.com.br/">Ateliê</a>; à colaboração da equipe do <a href="http://www.perseus.tufts.edu/hopper/" target="_blank" data-content="http://www.perseus.tufts.edu/hopper/" data-type="external">Perseus Project, Tufts U.</a> e <a href="http://www.dh.uni-leipzig.de/wo/" target="_blank" data-content="http://www.dh.uni-leipzig.de/wo/" data-type="external">Humboldt Chair of Digital Humanities, U. Leipzig</a>: G. Crane, M. Berti, B.Almas e T. Yousef.</span>
+                </div>
+                <div class="footitem">
+                    <span><b><i>Apoios</i></b> PPG em Linguística e Língua Portuguesa, Área de grego, Departamento de Linguística e DTI da </span>
+                    <a href="http://www.fclar.unesp.br/" target="_blank" data-content="http://www.fclar.unesp.br" data-type="external">FCL-Ar /UNESP</a>
+                    CNPq, FAPESP
+                </div>
+                <div class="footitem">
+                    <a target="_blank" href="https://github.com/aniseferreira/Grc-Por-DigDict">Projeto Aberto em Letras Clássicas Digitais</a> FCLAr/UNESP de Anise Ferreira (CNPq/PQ) e M. Celeste  C. Dezotti.
+                    Desenvolvedor: Ercy Moreira Neto (2022); Rúbens A. Rodrigues (até 2021).  Logotipo: Davi Rosa. <b><i>Contato</i></b>: <a href="mailto:anise.ferreira@unesp.br">anise.ferreira@unesp.br</a>
+                </div>
+
+                <div class="footitem">
+                    <span>©2017 - 2022 Sob licença <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" data-content="http://creativecommons.org/licenses/by-nc-sa/4.0/" data-type="external">Creative Commons Atribuição-NãoCommercial-CompartilhaIgual 4.0 International.</a></span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Autores</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div style="background-color: #FFF; text-align: center">
+                        <h4><strong>AUTORES DOS VOLUMES IMPRESSOS</strong></h4>
+
+                        <h5><strong>UNESP</strong></h5>
+                        Daisi Malhadas<br>
+                        Maria Helena M. Neves<br>
+                        M.Celeste Dezotti<br>
+                        Edvanda B. Rosa<br>
+                        Cláudia Féral<br>
+                        Fernando B. dos Santos<br>
+                        Anise D'O. Ferreira<br>
+                        Clóvis B. de Morais<br>
+
+                        <h5><strong>USP</strong></h5>
+                        Adriane S. Duarte<br>
+                        Anna Lia A.A.Prado<br>
+                        Gilda M. Reale Starzynski<br>
+
+                        <h5><strong>UFRJ</strong></h5>
+                        M. Adília P. de A.Starling<br>
+                        Nely M. Pessanha<br>
+                        Suzana T. M. de Melo<br>
+
+                        <h5><strong>UFMG</strong></h5>
+                        Tereza Virgínia R. Barbosa<br>
+
+                        <h5><strong>UFF</strong></h5>
+                        Glória B. Onelley<br>
+                        Sílvia Damasceno<br><br><br>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
         xintegrity="sha384-ka7Sk0Gln4gmtz2MIQnikT1wXgYsOg+OMhuP+IIRH9SENBO0LRn5q+8n
@@ -220,7 +285,7 @@ bTov4+1p" crossorigin="anonymous"></script>
 
 
     <script>
-            // Em um ambiente real, este seria o URL do seu backend.
+            // Em um ambiente real, este é o URL do seu backend.
         const METRICS_API = 'https://dicionario-backend.onrender.com';
 
         async function fetchMetrics() {
@@ -327,6 +392,7 @@ bTov4+1p" crossorigin="anonymous"></script>
         });
 
     </script>
+
 </body>
 
 </html>
