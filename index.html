@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <base href="http://hipatia.fclar.unesp.br/3x/">
+
+    <!-- Estilos CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        xintegrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Alegreya+Sans|Alegreya+Sans+SC&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Quicksand&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="http://hipatia.fclar.unesp.br/3x/css/app.css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <title>Dicionário Digital Grego-Português</title>
+
+    <style>
+        /*! normalize.css v8.0.1 | MIT License | github.com/necolas/normalize.css */
+        html {
+            line-height: 1.15;
+            -webkit-text-size-adjust: 100%
+        }
+        body {
+            margin: 0;
+            font-family: 'Nunito', sans-serif;
+        }
+        .search-container {
+            background-color: #f8f9fa;
+            border-radius: .5rem;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+        }
+    </style>
+</head>
+
+<body class="antialiased">
+
+    <main id="main">
+
+        <!-- INÍCIO: Painel de Métricas -->
+        <div class="container mt-5">
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <div class="card p-3 text-center shadow-sm h-100">
+                        <h6>Usuários Conectados</h6>
+                        <span id="metricsConnected" class="display-6">-</span>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="card p-3 text-center shadow-sm h-100">
+                        <h6>Total de Acessos</h6>
+                        <span id="metricsTotal" class="display-6">-</span>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="card p-3 text-center shadow-sm h-100">
+                        <h6>Acessos na Semana</h6>
+                        <span id="metricsWeekly" class="display-6">-</span>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center mt-3">
+                <button id="openMetricsModal" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#metricsModal">
+                    Ver Relatório Detalhado
+                </button>
+            </div>
+        </div>
+        <!-- FIM: Painel de Métricas -->
+
+        <div class="container-fluid">
+            <div class="row d-flex mt-4">
+                <div class="col-md-4">
+                    <a style="position: absolute" href="http://hipatia.fclar.unesp.br/3x/"><img id="logo-img" src="http://hipatia.fclar.unesp.br/3x/media/ddgp.png" height="100px"></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <!-- Buscador Principal -->
+            <div class="row height d-flex justify-content-center mt-2">
+                <div class="col-md-8">
+                    <form id="mainsearch" method="GET" action="http://hipatia.fclar.unesp.br/3x/search" autocomplete="off">
+                        <div class="form">
+                            <div class="input-group">
+                                <input type="text" name="pattern" class="form-control" placeholder="Digite em beta code para transliterar em grego..." onkeyup="greekTransform(this);" value="" autocomplete="off">
+                                <div class="input-group-append">
+                                    <button class="btn btn-secondary" type="submit" value="Search"><i class="fa fa-search"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Buscadores Extras -->
+            <div class="row justify-content-center mt-4">
+                <div class="col-md-8">
+                    <div class="accordion" id="extraSearches">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingOne">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                                    Ferramentas de Análise e Busca Avançada
+                                </button>
+                            </h2>
+                            <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#extraSearches">
+                                <div class="accordion-body">
+                                    
+                                    <!-- Buscador de Teste (Sem Acentos) -->
+                                    <div class="search-container shadow-sm">
+                                        <h5>Buscador de Teste (Ignora acentos)</h5>
+                                        <p class="small text-muted">Esta busca remove acentos do texto em latim antes de converter para o grego.</p>
+                                        <form id="accent-insensitive-search" onsubmit="handleAccentInsensitiveSearch(event)">
+                                            <div class="input-group">
+                                                <input type="text" id="accent-insensitive-input" class="form-control" placeholder="Digite em latim (com ou sem acentos)...">
+                                                <button class="btn btn-outline-secondary" type="submit">Buscar</button>
+                                            </div>
+                                            <div class="form-text">Texto grego gerado: <code id="accent-insensitive-output"></code></div>
+                                        </form>
+                                    </div>
+
+                                    <!-- Analisador Morfológico Alpheios -->
+                                    <div class="search-container shadow-sm mt-3">
+                                        <h5>Analisador Morfológico (Alpheios)</h5>
+                                        <p class="small text-muted">A plataforma Alpheios oferece ferramentas poderosas para análise morfológica. Como a integração direta não é possível, você pode usar o link abaixo para acessar o site e analisar seu texto.</p>
+                                        <a href="https://alpheios.net/" target="_blank" class="btn btn-outline-primary">Abrir Alpheios em nova aba</a>
+                                    </div>
+                                     
+                                    <!-- Analisador Morfológico Arethusa -->
+                                    <div class="search-container shadow-sm mt-3">
+                                        <h5>Analisador Morfológico (Arethusa/Perseids)</h5>
+                                        <p class="small text-muted">A ferramenta Arethusa, parte do projeto Perseids, é focada na anotação de textos e construção de treebanks, não sendo uma ferramenta de busca direta. Você pode explorar o projeto através do link abaixo.</p>
+                                        <a href="https://www.perseids.org/tools/arethusa/app/#/" target="_blank" class="btn btn-outline-primary">Explorar Arethusa</a>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row d-flex justify-content-center mt-2">
+                <div class="col-md-8">
+                    <div class="search-help shadow p-3 mb-2 bg-light rounded">
+                        <b>Dica: Digite usando o beta code para transliterar para o grego politônico:</b>
+                        <table class="table table-borderless table-sm small mt-2">
+                            <tbody>
+                                <tr><td>/a ⇒ á</td><td>\a ⇒ à</td><td>=a ⇒ ᾶ</td><td>)a ⇒ ἀ</td></tr>
+                                <tr><td>(a ⇒ ἁ</td><td>|a ⇒ ạ</td><td>+i ⇒ ϊ</td><td>h ⇒ η</td></tr>
+                                <tr><td>q ⇒ θ</td><td>x ⇒ χ</td><td>c ⇒ ξ</td><td>z ⇒ ζ</td></tr>
+                                <tr><td>j ⇒ ψ</td><td>w ⇒ ω</td><td>s ⇒ σ, ς (final)</td><td>&nbsp;</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <footer id="foot" class="mt-5">
+        <!-- Conteúdo do rodapé original -->
+    </footer>
+
+
+    <!-- INÍCIO: Modal de Relatórios -->
+    <div class="modal fade" id="metricsModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Relatório Geral de Acessos</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <ul class="list-group">
+                        <li class="list-group-item"><strong>Conectados agora:</strong> <span id="modalConnected">-</span></li>
+                        <li class="list-group-item"><strong>Total de visitas:</strong> <span id="modalTotal">-</span></li>
+                        <li class="list-group-item"><strong>Acessos na Semana:</strong> <span id="modalWeekly">-</span></li>
+                        <li class="list-group-item"><strong>Acessos internos (Unesp):</strong> <span id="modalInternal">-</span></li>
+                        <li class="list-group-item"><strong>Acessos externos:</strong> <span id="modalExternal">-</span></li>
+                        <li class="list-group-item">
+                            <strong>Origens de Acesso (IP → contagem):</strong>
+                            <pre id="modalOrigins" class="small">-</pre>
+                        </li>
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button id="downloadTxt" class="btn btn-success">Baixar Relatório (.txt)</button>
+                    <button id="downloadCsv" class="btn btn-info">Baixar Planilha (.csv)</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- FIM: Modal de Relatórios -->
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        xintegrity="sha384-ka7Sk0Gln4gmtz2MIQnikT1wXgYsOg+OMhuP+IIRH9SENBO0LRn5q+8n
+bTov4+1p" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    
+    <!-- Este script simula a transliteração de beta code para grego. Substitua pela sua implementação real (ex: greekcode.js) -->
+    <script>
+        // Função de exemplo para transliteração.
+        // A lógica real deve vir do seu arquivo 'greekcode.js'.
+        function greekTransform(element) {
+            // Esta é uma simulação. A lógica completa estaria em greekcode.js.
+            let text = element.value;
+            text = text.replace(/a/g, 'α').replace(/b/g, 'β').replace(/g/g, 'γ');
+            // ... e assim por diante para todas as regras do beta code
+        }
+    </script>
+    
+    <!-- <script type="text/javascript" src="js/greekcode.js?version=2"></script> -->
+    <script type="text/javascript" src="js/autocomplete.js"></script>
+
+
+    <script>
+        // Simula um endpoint de API para obter as métricas.
+        // Em um ambiente real, este seria o URL do seu backend.
+        const METRICS_API = 'http://localhost:4000/metrics';
+
+        async function fetchMetrics() {
+            try {
+                // Mock de dados, já que não temos um backend real.
+                const mockData = {
+                    connectedUsers: Math.floor(Math.random() * 20) + 5,
+                    totalVisits: 15320,
+                    weeklyVisits: Math.floor(Math.random() * 500) + 350,
+                    internal: 4890,
+                    external: 10430,
+                    origins: {
+                        '192.168.1.5': 8,
+                        '200.145.15.3': 12,
+                        '189.54.32.1': 5,
+                    }
+                };
+                
+                // Em um cenário real, você faria a chamada fetch:
+                // const resp = await fetch(METRICS_API);
+                // const data = await resp.json();
+                const data = mockData; // Usando os dados mockados
+
+                // Preenche o Painel principal
+                document.getElementById('metricsConnected').innerText = data.connectedUsers;
+                document.getElementById('metricsTotal').innerText = data.totalVisits;
+                document.getElementById('metricsWeekly').innerText = data.weeklyVisits;
+
+                // Preenche o Modal detalhado
+                document.getElementById('modalConnected').innerText = data.connectedUsers;
+                document.getElementById('modalTotal').innerText = data.totalVisits;
+                document.getElementById('modalWeekly').innerText = data.weeklyVisits;
+                document.getElementById('modalInternal').innerText = data.internal;
+                document.getElementById('modalExternal').innerText = data.external;
+
+                const originsText = Object.entries(data.origins)
+                    .map(([ip, count]) => `${ip} → ${count}`)
+                    .join('\n');
+                document.getElementById('modalOrigins').innerText = originsText;
+
+            } catch (e) {
+                console.error('Erro ao obter métricas:', e);
+                // Coloca um texto de erro caso a API falhe
+                const errorText = 'Erro';
+                document.getElementById('metricsConnected').innerText = errorText;
+                document.getElementById('metricsTotal').innerText = errorText;
+                document.getElementById('metricsWeekly').innerText = errorText;
+            }
+        }
+
+        // Função para gerar e disparar o download de arquivos
+        function downloadFile(filename, content, mimeType) {
+            const blob = new Blob([content], { type: mimeType });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(a.href);
+        }
+        
+        // Evento para o botão de download .txt
+        document.getElementById('downloadTxt').addEventListener('click', () => {
+            const total = document.getElementById('modalTotal').innerText;
+            const weekly = document.getElementById('modalWeekly').innerText;
+            const internal = document.getElementById('modalInternal').innerText;
+            const external = document.getElementById('modalExternal').innerText;
+            
+            const content = `Relatório Geral de Acessos\n` +
+                          `===========================\n\n` +
+                          `Total de Acessos: ${total}\n` +
+                          `Acessos na Semana: ${weekly}\n`+
+                          `Acessos Internos (Unesp): ${internal}\n`+
+                          `Acessos Externos: ${external}\n`;
+                          
+            downloadFile('relatorio_acessos.txt', content, 'text/plain;charset=utf-8;');
+        });
+
+        // Evento para o botão de download .csv
+        document.getElementById('downloadCsv').addEventListener('click', () => {
+            const total = document.getElementById('modalTotal').innerText;
+            const weekly = document.getElementById('modalWeekly').innerText;
+            const internal = document.getElementById('modalInternal').innerText;
+            const external = document.getElementById('modalExternal').innerText;
+
+            const content = `"Metrica","Valor"\n`+
+                          `"Total de Acessos",${total}\n`+
+                          `"Acessos na Semana",${weekly}\n`+
+                          `"Acessos Internos (Unesp)",${internal}\n`+
+                          `"Acessos Externos",${external}\n`;
+
+            downloadFile('relatorio_acessos.csv', content, 'text/csv;charset=utf-8;');
+        });
+
+        // Lógica para a busca de teste (ignora acentos)
+        function handleAccentInsensitiveSearch(event) {
+            event.preventDefault();
+            const inputElement = document.getElementById('accent-insensitive-input');
+            const outputElement = document.getElementById('accent-insensitive-output');
+            
+            // 1. Normaliza a string para remover acentos
+            const normalizedText = inputElement.value.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
+            
+            // 2. Aqui você chamaria sua função de transliteração (ex: do greekcode.js)
+            // Como não temos a função, vamos apenas simular a exibição do texto
+            // greekTransform(normalizedText) -> seria o ideal
+            outputElement.textContent = `(Simulação) Grego para: "${normalizedText}"`;
+            
+            // 3. Em um cenário real, você submeteria o `normalizedText` para a busca.
+            console.log("Texto normalizado para busca:", normalizedText);
+        }
+
+        // Atualiza as métricas ao carregar a página
+        window.addEventListener('load', fetchMetrics);
+        
+        // Atualiza as métricas ao abrir o modal
+        document.getElementById('metricsModal').addEventListener('show.bs.modal', function () {
+            fetchMetrics();
+        });
+
+    </script>
+</body>
+
+</html>
